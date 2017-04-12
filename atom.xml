@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-03-30T07:08:19.000Z</updated>
+  <updated>2017-04-12T09:11:18.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,75 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>用了这个库，妈妈再也不担心我的RecyclerView分割线了</title>
+    <link href="http://yoursite.com/2017/04/12/%E7%94%A8%E4%BA%86%E8%BF%99%E4%B8%AA%E5%BA%93%EF%BC%8C%E5%A6%88%E5%A6%88%E5%86%8D%E4%B9%9F%E4%B8%8D%E6%8B%85%E5%BF%83%E6%88%91%E7%9A%84RecyclerView%E5%88%86%E5%89%B2%E7%BA%BF%E4%BA%86/"/>
+    <id>http://yoursite.com/2017/04/12/用了这个库，妈妈再也不担心我的RecyclerView分割线了/</id>
+    <published>2017-04-12T09:10:46.000Z</published>
+    <updated>2017-04-12T09:11:18.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1>前言</h1>
+<p>写文章前我特地又去网上查了半天RecyclerView分割线的解决方案，大致分这么两种：</p>
+<p>第一种：在item的布局里划一条线
+第二种：自定义ItemDecoration</p>
+<p>第一种方案，在LinearLayoutManager中可能没啥问题，但是到了GridViewLayoutManager你还想用吗？你确定不是在逗我？
+第二种方案，网上几乎所有的例子都没有很好的通用性，要么只通用LinearLayoutManager，要么只通用GridViewLayoutManager，而且还没啥灵活性，比如我想某些LinearLayoutManager的最后一条item不显示分割线，默写显示，怎么办？这些都没解决好。</p>
+<p>于是我想，作为一个梦想成为海贼王的男人，我必须站出来，将我私藏很久的大宝剑拿出来，分享给大家。</p>
+<h2>RecyclerView分割线的难点</h2>
+<p>无外乎两点：</p>
+<ul>
+<li>在哪里显示（哪个Item？Item的上下左右哪里？）</li>
+<li>显示什么 （宽多少？虚线实线？啥颜色？纯色？渐变色？）</li>
+</ul>
+<p>其中最难最核心的，在哪里显示的问题，本项目已完美解决；
+关于第二点，显示什么的问题，鉴于大部分分割线基本都是纯色的，很少有那种花里胡哨的设计，所以该项目暂时样式只支持自定义宽度和颜色，但这样相信已经满足你的要求了吧，不过很快更多可自定义的样式将放出，欢迎Star、Fork或PR。</p>
+<h2>Y_DividerItemDecoration项目地址</h2>
+<p><a href="https://github.com/yanyusong/Y_DividerItemDecoration" target="_blank" rel="external">Y_DividerItemDecoration</a></p>
+<h2>简单介绍</h2>
+<p>一个通用的RecyclerView的分割线，支持LinearLayoutManager和GridViewLayoutManager。只要你能描述清楚每个position上下左右分割线的情况，原则上支持任意LayoutManager</p>
+<p><img src="http://ofc92njab.bkt.clouddn.com/Screenshot_2017-04-10-14-02-17.png?imageView2/0/w/500/h/1000/format/jpg/q/75%7Cimageslim" alt="LinearLayoutManager">   <img src="http://ofc92njab.bkt.clouddn.com/Screenshot_2017-04-10-14-02-30.png?imageView2/0/w/500/h/1000/format/jpg/q/75%7Cimageslim" alt="普通GridViewLayoutManager"> <img src="http://ofc92njab.bkt.clouddn.com/Screenshot_2017-04-10-14-02-39.png?imageView2/0/w/500/h/1000/format/jpg/q/75%7Cimageslim" alt="异形GridViewLayoutManager"></p>
+<h2>Features</h2>
+<ul>
+<li>LinearLayoutManager和GridViewLayoutManager通用</li>
+<li>自定义分割线的宽度和颜色</li>
+<li>灵活控制RecyclerView每个条目left、top、right、bottom的分割线的显示与否</li>
+</ul>
+<h2>Usage</h2>
+<h4>Step1</h4>
+<p>新建一个对象实现抽象类 Y_DividerItemDecoration ，在getItemSidesIsHaveOffsets(int itemPosition)中定义在itemPosition时条目的顺时针方向left, top, right, bottom是否需要显示分割线。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">class DividerItemDecoration extends Y_DividerItemDecoration &#123;</div><div class="line"></div><div class="line">    public DividerItemDecoration(Context context, int lineWidthDp, @ColorInt int colorRGB) &#123;</div><div class="line">        super(context, lineWidthDp, colorRGB);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public boolean[] getItemSidesIsHaveOffsets(int itemPosition) &#123;</div><div class="line">        //顺时针顺序:left, top, right, bottom</div><div class="line">        boolean[] isOffset = &#123;false, false, false, true&#125;;//默认只有bottom显示分割线</div><div class="line">        return isOffset;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h4>Step2</h4>
+<p>给RecyclerView添加分割线，并传入分割线的width和color，width单位是dp，color必须是包含Alpha和R、G、B的16进值的int值，例如：0xff6c6c6c</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">recyclerView.addItemDecoration(new DividerItemDecoration(this, 6, 0xff6c6c6c));</div></pre></td></tr></table></figure></p>
+<h2>Download</h2>
+<h4>Gradle</h4>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile &apos;com.yanyusong.y_divideritemdecoration:y_divideritemdecoration:1.0</div></pre></td></tr></table></figure></p>
+<h2>交流圈</h2>
+<p>技术交流QQ群：627374460</p>
+<p>或直接扫码加群</p>
+<p><img src="http://ofc92njab.bkt.clouddn.com/temp_qrcode_share_627374460.png?imageView2/0/w/300/h/800/format/jpg/q/75%7Cimageslim" alt="QQ群"></p>
+<h2>赞赏</h2>
+<p>如果Y_DividerItemDecoration节省了你大量的时间，可否给我买一袋咖啡，让我更加有动力去把它做得更好呢，谢谢！😊</p>
+<p><img src="http://ofc92njab.bkt.clouddn.com/1491803495015.jpg?imageView2/0/w/300/h/800/format/jpg/q/75%7Cimageslim" alt="支付宝"></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1&gt;前言&lt;/h1&gt;
+&lt;p&gt;写文章前我特地又去网上查了半天RecyclerView分割线的解决方案，大致分这么两种：&lt;/p&gt;
+&lt;p&gt;第一种：在item的布局里划一条线
+第二种：自定义ItemDecoration&lt;/p&gt;
+&lt;p&gt;第一种方案，在LinearLayoutManager
+    
+    </summary>
+    
+      <category term="Android" scheme="http://yoursite.com/categories/Android/"/>
+    
+    
+      <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
+    
+  </entry>
   
   <entry>
     <title>关于程序员未来的思考</title>
