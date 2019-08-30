@@ -55,23 +55,21 @@ h1 span, h5 {
 }
 
 .wrapper {
- 			position:fixed;
+/* 			position:fixed;
             top:0;
             left:0;
             bottom:0;
-            right:0;
+            right:0;*/
 
 
-/*	height: 1200px;
-    width: 100%;
-    position: relative;
+	height: 1000px;
+    width: 500px;
+    position: fixed;
     top: 0px;
     bottom: 0px
-	position: relative;
 	max-width: 840px;
-	/*width: 100%;*/
 /*	padding: 0 px;
-	margin: 0 px;*/*/
+	margin: 0 px;*/
 }
 
 /* Header Style */
